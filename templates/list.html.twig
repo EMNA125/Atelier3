@@ -1,0 +1,110 @@
+{% block body %}
+<h1> liste des formation </h1>
+{{dump(formations)}}
+
+<li>{% for formation in formations %}
+<div>
+
+    {{formation['ref']}}<br>
+    {{formation['Titre']}}<br>
+    {{formation['Description']}}<br>
+    {{formation['date_debut']}}<br>
+    {{formation['date_fin']}}<br>
+    {{formation['nb_participants']}}<br>
+</div>
+{% endfor %}
+</li>
+<h2> les titres des formations en majuscule</h2>
+<li>{% for formation in formations   %}
+<div>
+{{formation['Titre'] | upper }}<br>
+    
+</div>
+{% endfor %}
+</li>
+<h3>le nombre des formations</h3>
+<br><br>
+
+<li>{% set count = 0 %}
+{% for formation in formations %}
+    {% set count = count + 1 %}
+    <div>{{ count }}<div>
+{% endfor %}
+</li>
+<li>{% for formation in formations %}
+{% set taille = formations | length %}
+<div>{{ taille }}<div>
+{% endfor %}
+</li>
+{#{% for formation in formations %}
+{{ array | count}}
+{% endfor %}
+#}
+<h4>les titres des formations théoriques</h4>
+<br><br>
+
+<li>
+{% for formation in formations   %}
+{% if formation.Description is same as "formation theorique" %}
+<div>
+{{dump(formation.Titre)}}
+
+</div>
+{% endif %}
+{% endfor %}
+<li>
+<h6>le titre de la formation ayant le plus grand nombre de participants </h6>
+<br><br>
+{% set max = 10 %}
+{% for formation in formations   %}
+{% if formation['nb_participants'] > max %}
+<div>
+{% set max = formation['nb_participants']  %}
+{{formation['Titre']}}<br>
+  
+</div>
+{% endif %}
+{% endfor %}
+</li>  
+<h7> Nombre total de participants toutes formations </h7>
+<br><br>
+
+<li>{% set nb = 0 %}
+
+        {% for formation in formations %}
+     {% set nb = nb + formation.nb_participants %}
+ {% endfor %}
+ <p>Le nombre total de participants est de : {{nb}}</p>
+ <br><br>
+
+</li>
+      <h8> Tableau vide ou non défini</h8>
+<li>
+ {% if formations is defined%}
+ <p>le tableau est défini</p>
+ {% else %}
+ <p>le tableau n'est pas défini</p>
+ {% endif %}
+
+ {% if formations is empty %}
+ <p>le tableau est vide</p>
+ {% else %}
+ <p>le tableau non vide et contenant {{formations|length}} élements</p>
+ <br><br>
+
+ {% endif %}
+</li>
+<h9>Formations sans participants</h9>
+<br><br>
+
+
+   
+ {% for formation in formations %}
+{% if formation.nb_participants == 0 %}
+
+<a href="{{url('getname',{'nom':formation.Titre})}}"><input type="submit" value="Participer" name="Participe"></a><br>
+{% endif %}
+{% endfor %}
+
+{% endblock %}
+        
